@@ -1,8 +1,7 @@
-import React, { Component } from 'react'
+import React, { Component } from 'react';
 import TodoInput from'./components/TodoInput';
-import TodoList from './components/TodoList'
-
-import 'bootstrap/dist/css/bootstrap.min.css'
+import TodoList from './components/TodoList';
+import 'bootstrap/dist/css/bootstrap.min.css';
 import uuid from 'uuid';
 
 class App extends Component {
@@ -15,23 +14,28 @@ class App extends Component {
     const newTask= {
       id: uuid(),
       value: value,
-      completed: false
+      completed: false,
+      open: false,
+      cancel: false
     }
 
     const updatedTasks = [...this.state.tasks, newTask]
     this.setState({
       tasks: updatedTasks
-    })
-  };
-
-  handleDelete = (id) => {
-    const filteredTasks = this.state.tasks.filter(task => 
-      task.id !== id)
-      this.setState({
-        tasks: filteredTasks
-        
-      });
+    });
   }
+
+  handleCancel = (id) => {
+    const cancelTasks = this.state.tasks.map(task => {
+      if(task.id === id)
+        task.cancel = !task.cancel;
+        return task
+    });
+    this.setState({
+      tasks: cancelTasks
+    });
+  } 
+      
 
   handleComplete = (id) => {
     const completeTasks = this.state.tasks.map(task =>{
@@ -43,7 +47,19 @@ class App extends Component {
       tasks: completeTasks
     });
   }
-  render () {
+
+  handleDetail = (id) => {
+    const openTasks = this.state.tasks.map(task => {
+      if(task.id === id)
+        task.open = !task.open;
+        return task;
+    })
+    this.setState({
+      tasks: openTasks
+    })
+  }
+  
+   render () {
     return (
       <div className="container">
         <div className="row">
@@ -56,8 +72,9 @@ class App extends Component {
           />
             <TodoList 
             tasks={this.state.tasks}
-            handleDelete={this.handleDelete}
+            handleCancel={this.handleCancel}
             handleComplete={this.handleComplete}
+            handleDetail={this.handleDetail}
             />
           </div>
         </div>

@@ -1,19 +1,18 @@
 import React, { Component } from 'react';
-
 export default class TodoInput extends Component {
     state = {
-        value: ''
+        value: '',
     };
     onSubmit = (e) => {
         e.preventDefault();
         this.props.inputTask(this.state.value);
         this.setState({
-            value: ''
+            value: ''          
         })
     }
     onChange = (e) => 
     this.setState({
-        value: e.target.value
+        value: e.target.value,
     });
     render() {        
         return (
